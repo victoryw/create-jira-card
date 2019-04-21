@@ -13,7 +13,7 @@ jiraHttpClient.interceptors.request.use((config) => {
 
 const createJiraCard = async (card) => {
   console.log(card);
-  const response = await jiraHttpClient.post('', card);
+  const response = await jiraHttpClient.post('http://www.baidu.com', card);
   return response;
 };
 
@@ -35,8 +35,6 @@ function transfromToCard(servlet, menu) {
   };
 }
 
-const cards = [transfromToCard()];
-
 const inputs = `menu, servlet
 alice, 15
 bob, 25
@@ -44,9 +42,6 @@ bob, 25
 
 const csvObject = parser(inputs);
 
-
-console.log(csvObject);
-
-csvObject.map(row => transfromToCard(row.servlet, row.menu)).foreach((card) => {
+csvObject.map(row => transfromToCard(row.servlet, row.menu)).forEach((card) => {
   createJiraCard(card);
 });
