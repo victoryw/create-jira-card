@@ -12,11 +12,11 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-node": "^8.0.1",
-    "nock": "^10.0.6"
+    "eslint": "5.16.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-plugin-import": "2.17.2",
+    "eslint-plugin-node": "8.0.1",
+    "nock": "10.0.6"
   },
   "engines": {
     "node": "~11.14.0"
