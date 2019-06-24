@@ -1,6 +1,6 @@
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const datas = require('./data');
-const loadUri = require('./depenedies/service');
+const { loadRoot } = require('./depenedies/service');
 
 const csvWriter = createCsvWriter({
   path: './file.csv',
@@ -15,7 +15,7 @@ const csvWriter = createCsvWriter({
 
 const loads = async (_url, _url2, todos) => {
   const results = await Promise.all(todos.map(async (todo) => {
-    const result2 = await loadUri(_url, _url2, todo[0], todo[1]);
+    const result2 = await loadRoot(_url, _url2, todo[0], todo[1]);
     return result2;
   }));
   return results;

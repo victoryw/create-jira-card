@@ -3,6 +3,7 @@
 const program = require('commander');
 const createCardsService = require('./services/create-issues-service');
 const loadDependencyService = require('./services/load-method-dependency-root');
+const loadMethodDependencyTree = require('./services/load-method-dependency-tree');
 // const
 
 
@@ -32,7 +33,7 @@ program
   .option('-l, --url <dependency service root>', 'dependency service root')
   .option('-v, --view <dependency view service root>', 'dependency view service root')
   .action((options) => {
-    const service = loadDependencyService(options.url, options.view);
+    const service = loadMethodDependencyTree(options.url, options.view);
     service.load();
   });
 

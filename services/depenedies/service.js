@@ -1,12 +1,21 @@
 const { DepGraph } = require('dependency-graph');
-const loadDependencyProvider = require('../../providers/dependency-api-provider');
+const loadDepenciesTree = require('../../providers/dependency-api-provider');
 
-const loadUri = async (_url, _url2, className, method) => {
-  const requestUrl = `${_url}/method/${className}/${method}/invokes?deep=20`;
+function combineResultBody(_url2, className, method, caller) {
+  return {
+    caller,
+    view: `${_url2}/method/${className}/${method}/invokes?deep=20`,
+    class: className,
+    method,
+  };
+}
+
+const loadRoot = async (_url, _url2, className, method) => {
   const depGraph2 = new DepGraph();
 
   try {
-    const result = await loadDependencyProvider(requestUrl);
+    const result = await loadDepenciesTree(_url, className, method);
+
     result.nodes.forEach((node) => {
       depGraph2.addNode(node.id);
       depGraph2.setNodeData(node.id, node);
@@ -22,22 +31,24 @@ const loadUri = async (_url, _url2, className, method) => {
 
     const graph2s = depGraph2.overallOrder(true);
     const callerNames = graph2s.map(root => depGraph2.getNodeData(root).title);
-    return {
-      caller: callerNames,
-      view: `${_url2}/method/${className}/${method}/invokes?deep=20`,
-      class: className,
-      method,
-    };
+
+    return callerNames.map(name => combineResultBody(_url2, className, method, name));
   } catch (error) {
     // console.log(error, `${_url2}/method/${className}/${method}/invokes?deep=20`);
-    return {
-      caller: ['error'],
-      view: `${_url2}/method/${className}/${method}/invokes?deep=20`,
-      class: className,
-      method,
-    };
+    return combineResultBody(_url2, className, method, 'error');
   }
 };
 
+
+const OutPutDepenciesTree = async (_url, _url2, className, method) => {
+  const result = await loadDepenciesTree(_url, className, method);
+  return {
+    callees: result.nodes,
+    view: `${_url2}/method/${className}/${method}/invokes?deep=20`,
+    class: className,
+    method,
+  };
+};
+
 // eslint-disable-next-line no-multi-assign
-module.exports = exports = loadUri;
+module.exports = exports = { loadRoot, OutPutDepenciesTree };

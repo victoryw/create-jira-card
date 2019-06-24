@@ -10,5 +10,11 @@ const loadDependencyProvider = async (_url) => {
   }
 };
 
+async function loadDepenciesTree(_url, className, method) {
+  const requestUrl = `${_url}/method/${className}/${method}/invokes?deep=20`;
+  const result = await loadDependencyProvider(requestUrl);
+  return result;
+}
+
 // eslint-disable-next-line no-multi-assign
-module.exports = exports = loadDependencyProvider;
+module.exports = exports = loadDepenciesTree;
