@@ -14,10 +14,11 @@ const loadUri = async (_url, _url2, className, method) => {
     result.edges.forEach((edge) => {
       depGraph2.addDependency(edge.b, edge.a);
     });
+
     result.nodes.filter(node => node.title.indexOf('com.ebao.life.servlet.pub.common.RootServlet') > -1
       || node.title.indexOf('com.ebao.pub.framework.GenericAction') > -1
       || node.title.indexOf('com.picc.jmstask') > -1
-      || node.title.endWith('.main')).forEach(node => depGraph2.removeNode(node.id));
+      || node.title.endsWith('.main')).forEach(node => depGraph2.removeNode(node.id));
 
     const graph2s = depGraph2.overallOrder(true);
     const callerNames = graph2s.map(root => depGraph2.getNodeData(root).title);

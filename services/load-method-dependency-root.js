@@ -3,7 +3,7 @@ const datas = require('./data');
 const loadUri = require('./depenedies/service');
 
 const csvWriter = createCsvWriter({
-  path: '/Users/victoryw/myfiles/TW-Projects/picc/create-card-factory/file.csv',
+  path: './file.csv',
   header: [
     { id: 'class', title: 'class' },
     { id: 'method', title: 'method' },
@@ -36,7 +36,8 @@ const loadDependency = (_url, _url2) => ({
       }));
       return newResult;
     }).flatMap(x => x);
-    await csvWriter.writeRecords(tableMethodCalls);
+    console.log(tableMethodCalls);
+    // await csvWriter.writeRecords(tableMethodCalls);
   },
 });
 
