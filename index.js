@@ -2,7 +2,7 @@
 
 const program = require('commander');
 const createCardsService = require('./services/create-issues-service');
-const loadDependencyService = require('./services/load-method-dependency-service');
+const loadDependencyService = require('./services/load-method-dependency-root');
 // const
 
 
@@ -18,6 +18,16 @@ program
   });
 program
   .command('update')
+  .description('output the load dependecy root')
+  .option('-l, --url <dependency service root>', 'dependency service root')
+  .option('-v, --view <dependency view service root>', 'dependency view service root')
+  .action((options) => {
+    const service = loadDependencyService(options.url, options.view);
+    service.load();
+  });
+
+program
+  .command('dependecy-tree-create')
   .description('output the load dependecy tree')
   .option('-l, --url <dependency service root>', 'dependency service root')
   .option('-v, --view <dependency view service root>', 'dependency view service root')
