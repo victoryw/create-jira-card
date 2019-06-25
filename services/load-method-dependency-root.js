@@ -13,31 +13,28 @@ const csvWriter = createCsvWriter({
 });
 
 
-const loads = async (_url, _url2, todos) => {
-  const results = await Promise.all(todos.map(async (todo) => {
-    const result2 = await loadRoot(_url, _url2, todo[0], todo[1]);
-    return result2;
-  }));
-  return results;
+const loads = async (_url, _url2, todo) => {
+  const result2 = await loadRoot(_url, _url2, todo[0], todo[1]);
+  return result2;
 };
 
 const loadDependency = (_url, _url2) => ({
   load: async () => {
-    const totalResults = await Promise.all(datas.map(async (data) => {
-      const result = await loads(_url, _url2, [data]);
+    const totalResults = (await Promise.all(datas.map(async (data) => {
+      const result = await loads(_url, _url2, data);
       return result;
-    }));
+    }))).flatMap(x => x);
+
     const tableMethodCalls = totalResults.flatMap(x => x).map((tableMethodCall) => {
-      const newResult = tableMethodCall.caller.flatMap(call => ({
-        caller: call,
+      return {
+        caller: tableMethodCall.caller,
         view: tableMethodCall.view,
         class: tableMethodCall.class,
         method: tableMethodCall.method,
-      }));
-      return newResult;
-    }).flatMap(x => x);
-    console.log(tableMethodCalls);
-    // await csvWriter.writeRecords(tableMethodCalls);
+      };
+    });
+    await csvWriter.writeRecords(tableMethodCalls);
+    console.log('it work out');
   },
 });
 

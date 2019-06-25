@@ -34,8 +34,7 @@ const loadRoot = async (_url, _url2, className, method) => {
 
     return callerNames.map(name => combineResultBody(_url2, className, method, name));
   } catch (error) {
-    // console.log(error, `${_url2}/method/${className}/${method}/invokes?deep=20`);
-    return combineResultBody(_url2, className, method, 'error');
+    return [combineResultBody(_url2, className, method, 'error')];
   }
 };
 
