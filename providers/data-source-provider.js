@@ -1,24 +1,36 @@
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
 
-const connection = mysql.createConnection({
-  host: '10.127.151.14',
-  port: 8306,
-  user: 'root',
-  password: 'prisma',
-  database: 'default@default',
-});
+const createAnalyzeCon = async () => {
+  const conn = await mysql.createConnection({
+    host: '10.127.151.14',
+    port: 8306,
+    user: 'root',
+    password: 'prisma',
+    database: 'default@default',
+    connectTimeout: 180000,
+  });
+  return conn;
+};
 
-const saveDependencies = (callHeads) => {
+const saveDependencies = async (callHeads) => {
   const flatCallees = callHeads.flatMap(head => head.callees.map(headCallee => ({
     sourceClass: head.sourceClass,
     sourceMethod: head.sourceMethod,
     headClass: head.headClass,
-    headMthod: head.headMethod,
+    headMethod: head.headMethod,
     calleeId: headCallee.id,
     calleeClass: headCallee.class,
     calleeMethod: headCallee.method,
     headCallView: head.headCallView,
   })));
+  const valueStrs = flatCallees.map(result => `('${result.sourceClass}', '${result.sourceMethod}', '${result.headClass}', '${result.headMethod}', '${result.calleeId}', '${result.calleeClass}', '${result.calleeMethod}', '${result.headCallView}')`);
+  const valueStr = valueStrs.join(',');
+  const bulkInsert = ['INSERT INTO MethodCallTree(sourceClass, sourceMethod, headClass, headMethod, calleeId, calleeClass, calleeMethod, headCallView) Values'];
+  const bulkInsertArrays = bulkInsert.concat(valueStr);
+
+  const insertSql = bulkInsertArrays.join(' ');
+  const con = await createAnalyzeCon();
+  await con.execute(insertSql);
 };
 
 // eslint-disable-next-line no-multi-assign

@@ -20,7 +20,9 @@ const loadMethodDependencyTree = (apiUrl, viewUrl) => ({
   load: async () => {
     // 2. load the (class, method) with head
     // const results = await loads(apiUrl, viewUrl, datas);
-    const results = [['com.ebao.life.claim.bat.payment.batchpaystyle.BatchPayStyleDAO', 'savePayStyle', 'com.ebao.life.claim.bat.payment.batchpaystyle.BatchPayStyleServlet', 'doProcess']];
+    const results = [
+      ['com.ebao.life.claim.bat.payment.batchpaystyle.BatchPayStyleDAO', 'savePayStyle', 'com.ebao.life.claim.bat.payment.batchpaystyle.BatchPayStyleServlet', 'doProcess'],
+    ];
     // 3. load the (head) dependency
     const totalResult = await Promise.all(results.map(async (result) => {
       const headClass = result[2];
@@ -41,7 +43,9 @@ const loadMethodDependencyTree = (apiUrl, viewUrl) => ({
       };
     }));
     // 4. save the data
-    saveDependencies(totalResult);
+    await saveDependencies(totalResult);
+
+    console.log('push over');
   },
 });
 
