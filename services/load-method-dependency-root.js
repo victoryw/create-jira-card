@@ -7,7 +7,8 @@ const csvWriter = createCsvWriter({
   header: [
     { id: 'class', title: 'class' },
     { id: 'method', title: 'method' },
-    { id: 'caller', title: 'caller' },
+    { id: 'callerClass', title: 'headerClass' },
+    { id: 'callerMethod', title: 'headerMethod' },
     { id: 'view', title: 'view' },
   ],
 });
@@ -27,7 +28,8 @@ const loadDependency = (_url, _url2) => ({
 
     const tableMethodCalls = totalResults.flatMap(x => x).map((tableMethodCall) => {
       return {
-        caller: tableMethodCall.caller,
+        callerClass: tableMethodCall.callerClass,
+        callerMethod: tableMethodCall.callerMethod,
         view: tableMethodCall.view,
         class: tableMethodCall.class,
         method: tableMethodCall.method,

@@ -21,6 +21,7 @@ const saveDependencies = async (callHeads) => {
     calleeId: headCallee.id,
     calleeClass: headCallee.class,
     calleeMethod: headCallee.method,
+    calleeMethodId: headCallee.methodId,
     headCallView: head.headCallView,
   })));
   const valueStrs = flatCallees.map(result => `('${result.sourceClass}', '${result.sourceMethod}', '${result.headClass}', '${result.headMethod}', '${result.calleeId}', '${result.calleeClass}', '${result.calleeMethod}', '${result.headCallView}')`);
@@ -30,7 +31,8 @@ const saveDependencies = async (callHeads) => {
 
   const insertSql = bulkInsertArrays.join(' ');
   const con = await createAnalyzeCon();
-  await con.execute(insertSql);
+  const result = await con.execute(insertSql);
+  return result;
 };
 
 // eslint-disable-next-line no-multi-assign
