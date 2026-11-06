@@ -19,9 +19,7 @@
     js-tokens "^4.0.0"
 
 "@dagrejs/graphlib@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@dagrejs/graphlib/-/graphlib-2.1.4.tgz#86c70e4f073844a2f4ada254c8c7b88a6bdacdb1"
-  integrity sha512-QCg9sL4uhjn468FDEsb/S9hS2xUZSrv/+dApb1Ze5VKO96pTXKNJZ6MGhIpgWkc1TVhbVGH9/7rq/Mf8/jWicw==
+  version "2.2.4"
   dependencies:
     lodash "^4.11.1"
 
